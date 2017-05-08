@@ -4,7 +4,7 @@ data "aws_vpc" "vpc" {
 # ${data.aws_vpc.vpc.tags["Name"]}
 
 resource "aws_rds_cluster" "aurora" {
-  cluster_identifier_prefix       = "tf-${var.name}-${data.aws_vpc.vpc.tags["Name"]}"
+  cluster_identifier              = "tf-${var.name}-${data.aws_vpc.vpc.tags["Name"]}"
   availability_zones              = "${var.azs}"
   database_name                   = "${var.database_name}"
   master_username                 = "${var.master_username}"
@@ -17,7 +17,8 @@ resource "aws_rds_cluster" "aurora" {
   apply_immediately               = "${var.apply_immediately}"
   db_subnet_group_name            = "${aws_db_subnet_group.aurora_subnet_group.id}"
   db_cluster_parameter_group_name = "${aws_rds_cluster_parameter_group.aurora_cluster_parameter_group.id}"
-
+  final_snapshot_identifier       = "final-snapshot-${var.name}-${data.aws_vpc.vpc.tags["Name"]}" # Useful in dev
+  #skip_final_snapshot             = true # Useful in dev - defaults to false 
   lifecycle {
     prevent_destroy               = "true" # https://www.terraform.io/docs/configuration/resources.html#prevent_destroy
   }
@@ -25,7 +26,7 @@ resource "aws_rds_cluster" "aurora" {
 
 resource "aws_rds_cluster_instance" "aurora_instance" {
   count                   = "${var.cluster_size}"
-  identifier_prefix       = "tf-rds-aurora-${var.name}-${data.aws_vpc.vpc.tags["Name"]}-${count.index}"
+  identifier              = "tf-rds-aurora-${var.name}-${data.aws_vpc.vpc.tags["Name"]}-${count.index}"
   cluster_identifier      = "${aws_rds_cluster.aurora.id}"
   instance_class          = "${var.instance_class}"
   publicly_accessible     = "false"

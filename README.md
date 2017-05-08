@@ -7,36 +7,55 @@ This module
 
 - Stuff this module does
 
+- we encrypt everthing and make a kms id for you
+- future enhancment to make kms_key_id optional, so if you do pass it it'll use it, and if you don't it'll create the kms key id for you
+
 ----------------------
 #### Required
-- `env" - "env to deploy into, should typically dev/staging/prod"
-- `vpc_id"  - "VPC ID"
+
+
+- `azs` - "A list of Availability Zones in the Region"
+- `cluster_size` - "Number of cluster instances to create"
+- `env` - "env to deploy into, should typically dev/staging/prod"
+- `name` - "Name for the Redis replication group i.e. cmsCommon"
+- `subnets` - "List of subnets to use in creating RDS subnet group (must already exist)"
+- `vpc_id`  - "VPC ID"
+
+##### see aws_rds_cluster documentation for these variables
+- `database_name`
+- `master_username`
+- `master_password`
 
 #### Optional
-
-- `cluster_size` " - "Consul cluster size. This must be greater the 3, defaults to 3"
+- `backup_retention_period` - "The days to retain backups for defaults to 30"
+- `db_port` - "defaults to 3306"
+- `allowed_cidr` - "A list of Security Group ID's to allow access to. Defaults to ["127.0.0.1/32"]"
+- `allowed_security_groups` - "A list of Security Group ID's to allow access to. Defaults to empty list"
+- `preferred_backup_window` - "The daily time range during which automated backups are created. Default to 01:00-03:00"
+- `instance_class` - "Instance class to use when creating RDS cluster. Defaults to db.r3.large"
+- `storage_encrypted` - "Defaults to true"
+- `apply_immediately` - "Defaults to false"
 
 Usage
 -----
 
 ```hcl
-module "consul-cluster" {
-  source                     = "./terraform-consul-cluster"
-  alb_log_bucket             = "some-bucket-name"             # "some-bucket-name"
-  cluster_size               = 3                              # Must be 3 or more
-  dns_zone                   = "example.com"                  # "example.com."
-  ecs_cluster_id             = "${module.ecs.cluster_id}"
-  env                        = "dev"                          # dev/staging/prod
-  join_ec2_tag               = "dev-infra ECS Node"           # "dev-infra ECS Node"
-  subnets                    = ["10.0.0.0/24", "10.0.1.0/24"] # List of networks
-  vpc_id                     = "vpc-e1234567"                 # "vpc-e1234567"
-  sha_htpasswd_hash          = "consul:{SHA}zblahblah="       # "consul:{SHA}z...="
-  oauth2_proxy_htpasswd_file = "/conf/htpasswd"               # "path to httpsswd file"
-  oauth2_proxy_provider      = "github"                       # This module is designed to use github
-  oauth2_proxy_github_org    = "FitnessKeeper"                # Github Org
-  oauth2_proxy_github_team   = "devops"
-  oauth2_proxy_client_id     = "0d440bd55527cfe3149e"
-  oauth2_proxy_client_secret = "04b17e65fb10g96ff88fa2a4edad48528777e75b"
+
+module "aurora" {
+  source = "../modules/terraform-aurora"
+  azs                     = "${var.azs}"
+  env                     = "${var.env}"
+  name                    = "thtest"
+  subnets                 = "${module.vpc.database_subnets}"
+  vpc_id                  = "${module.vpc.vpc_id}"
+  cluster_size            = "2"
+  allowed_cidr            = ["10.10.10.0/24", "10.10.20.0/24"]
+  allowed_security_groups = ["sg-24f4655b"]
+  database_name           = "thtest"
+  master_username         = "tim"
+  master_password         = "test1234"
+  backup_retention_period = "1"
+  #preferred_backup_window = ""
 }
 
 ```

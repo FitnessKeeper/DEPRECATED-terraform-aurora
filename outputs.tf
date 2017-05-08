@@ -7,5 +7,5 @@ output "reader_endpoint" {
 }
 
 output "security_group_id"{
-  value = "foo"
+  value = "${aws_security_group.aurora_security_group.id}"
 }

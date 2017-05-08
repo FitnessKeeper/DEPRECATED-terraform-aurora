@@ -8,7 +8,6 @@ resource "aws_security_group" "aurora_security_group" {
   }
 }
 
-
 resource "aws_security_group_rule" "aurora_ingress" {
   count                    = "${length(var.allowed_security_groups)}"
   type                     = "ingress"

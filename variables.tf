@@ -1,12 +1,15 @@
 variable "env" {}
 
-variable "cluster_size" {
-  description = "Number of cluster instances to create"
+variable "allowed_cidr" {
+  type        = "list"
+  default     = ["127.0.0.1/32"]
+  description = "A list of Security Group ID's to allow access to."
 }
 
-variable "instance_class" {
-  description = "Instance class to use when creating RDS cluster"
-  default = "db.r3.large"
+variable "allowed_security_groups" {
+  type        = "list"
+  default     = []
+  description = "A list of Security Group ID's to allow access to."
 }
 
 variable "azs" {
@@ -14,19 +17,21 @@ variable "azs" {
   type        = "list"
 }
 
+variable "cluster_size" {
+  description = "Number of cluster instances to create"
+}
+
+variable "db_port" {
+  default = 3306
+}
+
+variable "instance_class" {
+  description = "Instance class to use when creating RDS cluster"
+  default = "db.r3.large"
+}
+
 variable "name" {
   description = "Name for the Redis replication group i.e. cmsCommon"
-}
-
-variable "allowed_cidr" {
-  type        = "list"
-  default     = ["127.0.0.0/32"]
-  description = "A list of Security Group ID's to allow access to."
-}
-
-variable "allowed_security_groups" {
-  type        = "list"
-  description = "A list of Security Group ID's to allow access to."
 }
 
 variable "subnets" {
@@ -34,7 +39,6 @@ variable "subnets" {
   type        = "list"
 }
 
-variable "db_port" { default = 3306 }
 
 # see aws_rds_cluster documentation for these variables
 variable "database_name" { }
