@@ -27,7 +27,7 @@ variable "db_port" {
 
 variable "instance_class" {
   description = "Instance class to use when creating RDS cluster"
-  default = "db.r3.large"
+  default = "db.t2.medium"
 }
 
 variable "name" {

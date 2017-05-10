@@ -1,7 +1,6 @@
 data "aws_vpc" "vpc" {
   id = "${var.vpc_id}"
 }
-# ${data.aws_vpc.vpc.tags["Name"]}
 
 resource "aws_rds_cluster" "aurora" {
   cluster_identifier              = "tf-${var.name}-${data.aws_vpc.vpc.tags["Name"]}"
@@ -18,7 +17,7 @@ resource "aws_rds_cluster" "aurora" {
   db_subnet_group_name            = "${aws_db_subnet_group.aurora_subnet_group.id}"
   db_cluster_parameter_group_name = "${aws_rds_cluster_parameter_group.aurora_cluster_parameter_group.id}"
   final_snapshot_identifier       = "final-snapshot-${var.name}-${data.aws_vpc.vpc.tags["Name"]}" # Useful in dev
-  #skip_final_snapshot             = true # Useful in dev - defaults to false 
+  #skip_final_snapshot             = true # Useful in dev - defaults to false
   lifecycle {
     prevent_destroy               = "true" # https://www.terraform.io/docs/configuration/resources.html#prevent_destroy
   }

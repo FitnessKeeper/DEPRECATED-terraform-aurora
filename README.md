@@ -7,8 +7,8 @@ This module
 
 - Stuff this module does
 
-- we encrypt everthing and make a kms id for you
-- future enhancment to make kms_key_id optional, so if you do pass it it'll use it, and if you don't it'll create the kms key id for you
+- we encrypt everything and make a kms id for you
+- future enhancement to make kms_key_id optional, so if you do pass it it'll use it, and if you don't it'll create the kms key id for you
 
 ----------------------
 #### Required
@@ -18,10 +18,10 @@ This module
 - `cluster_size` - "Number of cluster instances to create"
 - `env` - "env to deploy into, should typically dev/staging/prod"
 - `name` - "Name for the Redis replication group i.e. cmsCommon"
-- `subnets` - "List of subnets to use in creating RDS subnet group (must already exist)"
+- `subnets` - "List of subnet IDs to use in creating RDS subnet group (must already exist)"
 - `vpc_id`  - "VPC ID"
 
-##### see aws_rds_cluster documentation for these variables
+##### see [aws_rds_cluster documentation](https://www.terraform.io/docs/providers/aws/r/rds_cluster.html) for these variables
 - `database_name`
 - `master_username`
 - `master_password`
@@ -31,8 +31,8 @@ This module
 - `db_port` - "defaults to 3306"
 - `allowed_cidr` - "A list of Security Group ID's to allow access to. Defaults to ["127.0.0.1/32"]"
 - `allowed_security_groups` - "A list of Security Group ID's to allow access to. Defaults to empty list"
-- `preferred_backup_window` - "The daily time range during which automated backups are created. Default to 01:00-03:00"
-- `instance_class` - "Instance class to use when creating RDS cluster. Defaults to db.r3.large"
+- `preferred_backup_window` - "The daily time range in UTC during which automated backups are created. Default to 01:00-03:00"
+- `instance_class` - "Instance class to use when creating RDS cluster. Defaults to db.t2.medium"
 - `storage_encrypted` - "Defaults to true"
 - `apply_immediately` - "Defaults to false"
 
@@ -71,3 +71,4 @@ Authors
 
 License
 =======
+[MIT License](LICENSE)

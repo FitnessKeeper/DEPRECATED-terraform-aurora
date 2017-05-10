@@ -1,3 +1,7 @@
+output "rds_cluster_id" {
+  value = "${aws_rds_cluster.aurora.id}"
+}
+
 output "writer_endpoint" {
   value = "${aws_rds_cluster.aurora.endpoint}"
 }
