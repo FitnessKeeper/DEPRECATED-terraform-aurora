@@ -62,6 +62,10 @@ module "aurora" {
 
 Outputs
 =======
+- `rds_cluster_id`
+- `writer_endpoint`
+- `reader_endpoint`
+- `security_group_id`
 
 
 Authors
