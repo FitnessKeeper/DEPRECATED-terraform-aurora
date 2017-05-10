@@ -42,7 +42,7 @@ Usage
 ```hcl
 
 module "aurora" {
-  source = "../modules/terraform-aurora"
+  source = "github.com/FitnessKeeper/terraform-aurora?ref=1.0.0"
   azs                     = "${var.azs}"
   env                     = "${var.env}"
   name                    = "thtest"
@@ -75,5 +75,3 @@ Authors
 
 License
 =======
-
-[MIT License](LICENSE)
